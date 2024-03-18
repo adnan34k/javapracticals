@@ -3,14 +3,18 @@ class Main{
 		double a = 3;
 		double b = 2;
 		long c = 10;
-		//add(a,b);
-		//sub(a,b);
-		//mul(a,b);
-		div(a,b);
-		mod(a,b);
-		power(a,b);
-		log(10,10);
-		findNthRoot(9,3);
+		System.out.println(add(a,b));
+		System.out.println(sub(a,b));
+		System.out.println(mul(a,b));
+		System.out.println(div(a,b));
+		System.out.println(mod(a,b));
+		System.out.println(power(a,b));
+		System.out.println(log(10,10));
+		System.out.println(findNthRoot(9,2));
+		int n=3,r=3;
+		System.out.println(factorial(n));
+		System.out.println(nCr(n,r));
+		System.out.println(nPr(n,r));
 	}
 	public static double add(double a , double b){
 		return a+b;
@@ -34,10 +38,11 @@ class Main{
 		return a%b;
 	}
 	public static double power(double base , double exponent){
-		for(int i=1;i<=exponent;i++){
-		base= base*base;
+		double result = 1;
+		for(int i=0;i<exponent;i++){
+		result= result*base;
 		}
-		return base;
+		return result;
 	}
 	public static double log(double base ,long exponent){
 		double result = 0;
@@ -49,19 +54,19 @@ class Main{
 		}
 		return result;
 	}
-	 public static double findNthRoot(double number, int n) {
-        double start = 0;
-        double end = number;
+	 public static float findNthRoot(float number, int n) {
+        float start = 0;
+        float end = number;
 
         // Define precision to control the accuracy of the result
         double precision = 0.000001; 
 
         // If the number is negative and n is even, nth root is undefined
         if (number < 0 && n % 2 == 0) {
-            return Double.NaN;
+            return Float.NaN;
         }
 
-        double mid;
+        float mid;
         while (true) {
             mid = (start + end) / 2;
 
@@ -80,4 +85,33 @@ class Main{
             }
         }
     }
+    	public static int factorial(int n)
+    	{
+    		if(n<0){
+    			System.err.println("error factorial of negative numbers is not defined");
+    			return -1;
+    		}
+    		else if(n==0 || n==1)
+    		{
+    			return 1;
+    		}
+    		else{
+    		 return factorial(n-1)*n;
+    		}
+    	}
+    	public static double nCr(int n, int r)
+    	{	if(r>n) return -1;
+    		if(n==r ||r==0) return 1;
+    		else{
+    			return nCr(n-1 , r-1)+nCr(n-1,r); //using Recursion
+    		}
+    	}
+    	public static double nPr(int n, int r)
+    	{	if(r>n) return -1;
+    		if(n==r ||r==0) return 1;
+    		int t1 = factorial(n);
+    		int t2 = factorial(r);
+    		return t1/t2;
+    	}
+    	
 }
