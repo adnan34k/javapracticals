@@ -1,20 +1,28 @@
 class Main{
 	public static void main(String[] args){
-		double a = 3;
+		/*double a = 3;
 		double b = 2;
 		long c = 10;
 		System.out.println(add(a,b));
 		System.out.println(sub(a,b));
 		System.out.println(mul(a,b));
 		System.out.println(div(a,b));
-		System.out.println(mod(a,b));
-		System.out.println(power(a,b));
-		System.out.println(log(10,10));
+		System.out.println(mod(a,b));*/
+		//System.out.println(power(2,3));
+		/*System.out.println(log(10,10));
 		System.out.println(findNthRoot(9,2));
 		int n=3,r=3;
 		System.out.println(factorial(n));
 		System.out.println(nCr(n,r));
 		System.out.println(nPr(n,r));
+		
+		System.out.println(exponentOfTen(-1));*/
+		complexNumber num1 = new complexNumber(5,7); 
+		//num1.show();
+		complexNumber num2 = new complexNumber(3,14);
+		//num2.show();
+		complexNumber ans = num1.add2(num2);
+		ans.show();
 	}
 	public static double add(double a , double b){
 		return a+b;
@@ -37,12 +45,12 @@ class Main{
 	public static double mod(double a , double b){
 		return a%b;
 	}
-	public static double power(double base , double exponent){
-		double result = 1;
-		for(int i=0;i<exponent;i++){
-		result= result*base;
-		}
-		return result;
+	public static double power(double base , long exponent){
+		if(exponent==0)return 1;
+		if(exponent<0) return (1/power(base,-1*exponent));
+		double temp = power(base,exponent/2);
+		if(exponent%2!=0) return temp*temp*base;
+		return temp*temp;
 	}
 	public static double log(double base ,long exponent){
 		double result = 0;
@@ -113,5 +121,50 @@ class Main{
     		int t2 = factorial(r);
     		return t1/t2;
     	}
+    	public static double exponentOfTen(int n)
+    	{	
+  		if(n==0) return 1;
+    		double result = 1;
+    		int i = 1;
+    		if(n>0){
+    		while(i<=n)
+    		{
+    			result = result*10;
+    			i++;
+    		}
+    		return result;
+    		}
+    		if(n<0){
+    		i = -1;
+    			while(i>=n)
+    			{
+    			result = result/10;
+    			i--;
+    			}	
+    			return result;
+    		}
+    		return 0;
+    	}
     	
+}
+class complexNumber{
+	private int real;
+	private int imag;
+	
+	complexNumber(int real, int imag)
+	{
+		this.real = real;
+		this.imag = imag;
+	}
+	public void show()
+	{
+		System.out.println(this.real+"+i"+this.imag);
+	}
+	public complexNumber add2(complexNumber n2)
+	{
+		complexNumber res = new complexNumber(0,0);
+		res.real = this.real+n2.real;
+		res.imag = this.imag+n2.imag;
+		return res;
+	}
 }
