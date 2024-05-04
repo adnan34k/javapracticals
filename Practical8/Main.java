@@ -2,8 +2,26 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.IOException;
 import java.util.InputMismatchException;
 
+class InvalidQuantityException extends Exception{
+	public InvalidQuantityException(String message){
+		super(message);
+	}
+}
+
+class BookNotFoundException extends Exception{
+	public BookNotFoundException(String message){
+		super(message);
+	}
+}
+
+class UserNotFoundException extends Exception{
+	public UserNotFoundException(String message){
+		super(message);
+	}
+}
 interface LibraryOperations{
 	void addBook(ArrayList<Book> library);
 	void borrowBook(ArrayList<Book> library);
@@ -31,7 +49,7 @@ class Library implements LibraryOperations{
 		int quantity = sc.nextInt();
 		sc.nextLine();      //consume newline
 		if(quantity<=0){
-			throw new IllegalArgumentException("quantity of books must be greater than 0");
+			throw new InvalidQuantityException("quantity of books must be greater than 0");
 		}
 		
 		for(int i=0;i<quantity;i++){
@@ -40,7 +58,7 @@ class Library implements LibraryOperations{
 		} 
 		System.out.println("Books added successfully\n");
 		}
-		catch(IllegalArgumentException e){
+		catch(InvalidQuantityException e){
 			System.out.println(e.getMessage());   //if the 	quantity is less than 1;
 		}
 		
@@ -63,10 +81,10 @@ class Library implements LibraryOperations{
 			}
 		}
 		if(bookFound==false){
-			System.out.println("book is not found in library\n");
+			throw new BookNotFoundException("book is not found in library\n");
 		}
 		}
-		catch(Exception e){
+		catch(BookNotFoundException e){
 			System.out.println(e.getMessage());
 		}
 	}
@@ -103,10 +121,10 @@ class Library implements LibraryOperations{
 			}
 		}
 		if(bookFound == false){
-			System.out.println("Book "+bookName +" is not available\n");
+			throw new BookNotFoundException("Book "+bookName +" is not available\n");
 		}
 		}
-		catch(Exception e){
+		catch(BookNotFoundException e){
 			System.out.println(e.getMessage());
 		}
 		
@@ -118,8 +136,7 @@ class Library implements LibraryOperations{
 		String regNo = sc.nextLine();
 		User user = users.get(regNo);
 		if (user == null){
-        		System.out.println("User not found.\n");
-        		return;
+        		throw new UserNotFoundException("User not found.\n");
     		}
     
 		System.out.println("Enter the name of book to be returned");
@@ -148,12 +165,13 @@ class Library implements LibraryOperations{
 			}
 		}
 		if(bookFound == false){
-			System.out.println("Book "+bookName +" is not found in library\n");
+			throw new BookNotFoundException("Book "+bookName +" is not found in library\n");
 		}
 		}
-		catch(Exception e){
+		catch(BookNotFoundException | UserNotFoundException e){
 			System.out.println(e.getMessage());
 		}
+		
 	}
 	public void seeAllBooks(ArrayList<Book> library){
 		
@@ -175,13 +193,13 @@ class Library implements LibraryOperations{
 }
 public class Main{
 	public static void main(String []args){
-		try{
 		Scanner sc= new Scanner(System.in);
-		
+		try{
 		Library lib = new Library(); 
 		while(true){
 		System.out.println("1.Borrow a book\n2.Return a book\n3.Add a new book to library\n4.Delete a book from library\n5.See all available books\n6.Exit\n");
 		int choice = sc.nextInt();
+		
 		switch(choice){
 			case 1:lib.borrowBook(lib.library);
 				break;
@@ -196,15 +214,18 @@ public class Main{
 			case 6:	sc.close();
 				System.exit(0);
 				break;
-			default:System.out.println("choose correct option");
+			default:System.out.println("choose correct option\n");
 				break;
 		}
 		}
 		
 	}
 	
-	catch(Exception e){
-		System.out.println("error: "+e.getMessage());
+	catch(InputMismatchException e){
+		System.out.println("please press the valid key");
+	}
+	finally{
+		sc.close();
 	}
 	}
 }
